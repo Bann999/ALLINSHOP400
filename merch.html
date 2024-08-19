@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL IN Merchandise</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url(ALL\ IN\ background.jfif);
+            background-size: cover; /* Ensures the image covers the entire screen */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-position: center center; /* Centers the image on the page */
+            background-attachment: fixed; /* Keeps the background fixed during scrolling */
+            color: #fff;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .product {
+            background: #fff;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            width: 200px;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+        }
+
+        .cart-item {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        #cart-items {
+            background: #fff;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        /* Hide all sections by default */
+        section {
+            display: none;
+        }
+
+        /* Display the active section */
+        section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ALL IN</h1>
+        <nav>
+            <ul>
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#about" class="nav-link">About Us</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#cart" class="nav-link">Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="active">
+        <h2>Welcome to ALL IN Merchandise</h2>
+        <p>Explore our exclusive collection of merchandise.</p>
+    </section>
+
+    <section id="products">
+      <h2>Our Products</h2>
+      <div class="product-container">
+        <div class="product" data-id="1" data-name="T-shirt" data-price="20.00">
+          <!-- Replace the URL below with your product image URL -->
+          <img src="IMG_3894.jpeg" alt="T-shirt">
+          <font color="Black">
+            <h3>T-shirt</h3>
+        </font>
+          <font color="Black">
+            <p>$20.00</p>
+        </font>
+          <select class="color-option">
+              <option value="Black">Black</option>
+              <option value="White">White</option>
+              <option value="Tan">Tan</option>
+          </select>
+          <select class="size-option">
+              <option value="S">Small</option>
+              <option value="M">Medium</option>
+              <option value="L">Large</option>
+          </select>
+          <button class="add-to-cart">Add to Cart</button>
+      </div>
+      
+      <div class="product" data-id="2" data-name="Sweats" data-price="35.00">
+          <!-- Replace the URL below with your product image URL -->
+          <img src="https://your-image-url.com/sweats.jpg" alt="Sweats">
+          <h3>Sweats</h3>
+          <p>$35.00</p>
+          <select class="color-option">
+              <option value="Gray">Gray</option>
+              <option value="Black">Black</option>
+              <option value="Red">Red</option>
+          </select>
+          <select class="size-option">
+              <option value="S">Small</option>
+              <option value="M">Medium</option>
+              <option value="L">Large</option>
+          </select>
+          <button class="add-to-cart">Add to Cart</button>
+      </div>
+      </div>
+  </section>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>ALL IN is a brand dedicated to providing high-quality merchandise for our dedicated fans. Our mission is to deliver top-notch products that you will love and cherish.</p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form id="contact-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </section>
+
+    <section id="cart">
+        <h2>Shopping Cart</h2>
+        <div id="cart-items"></div>
+        <p>Total: $<span id="cart-total">0.00</span></p>
+        <button id="checkout">Checkout</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 ALL IN Merchandise. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCountElement = document.getElementById('cart-count');
+            const cartItemsElement = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
+
+            function updateCart() {
+                cartItemsElement.innerHTML = '';
+                let total = 0;
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <p>${item.name} - $${item.price.toFixed(2)} x ${item.quantity} (${item.color}, ${item.size})</p>
+                        <button data-id="${item.id}">Remove</button>
+                    `;
+                    cartItemsElement.appendChild(itemElement);
+                    total += item.price * item.quantity;
+                });
+                cartTotalElement.textContent = total.toFixed(2);
+                cartCountElement.textContent = cart.length;
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productElement = this.parentElement;
+                    const productId = productElement.getAttribute('data-id');
+                    const productName = productElement.getAttribute('data-name');
+                    const productPrice = parseFloat(productElement.getAttribute('data-price'));
+                    const productColor = productElement.querySelector('.color-option').value;
+                    const productSize = productElement.querySelector('.size-option') ? productElement.querySelector('.size-option').value : 'N/A';
+
+                    const existingProduct = cart.find(item => item.id === productId && item.color === productColor && item.size === productSize);
+                    if (existingProduct) {
+                        existingProduct.quantity += 1;
+                    } else {
+                        cart.push({ id: productId, name: productName, price: productPrice, quantity: 1, color: productColor, size: productSize });
+                    }
+                    updateCart();
+                });
+            });
+
+            cartItemsElement.addEventListener('click', function(event) {
+                if (event.target.tagName === 'BUTTON') {
+                    const productId = event.target.getAttribute('data-id');
+                    const productIndex = cart.findIndex(item => item.id === productId);
+                    if (productIndex !== -1) {
+                        cart.splice(productIndex, 1);
+                        updateCart();
+                    }
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    document.querySelectorAll('section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    const targetSection = document.querySelector(link.getAttribute('href'));
+                    targetSection.classList.add('active');
+                });
+            });
+
+            document.getElementById('checkout').addEventListener('click', function() {
+                alert('Checkout functionality to be implemented.');
+            });
+
+            updateCart();
+        });
+    </script>
+</body>
+</html>
